@@ -1,28 +1,43 @@
 'use client';
 import React from 'react';
-import {useSelector} from "react-redux";
-import {RootState} from "~/redux/store";
 import images from "~/constants/images";
 import clsx from "clsx";
 import {HiOutlinePencilSquare} from "react-icons/hi2";
 import {BsCheck2Circle} from "react-icons/bs";
 import UploadSingleFile from "~/components/common/UploadSingleFile/UploadSingleFile";
+import Image from "next/image";
+import {useQuery} from "@tanstack/react-query";
+import {QueryKey} from "~/constants/config/enum";
+import {apiRequest} from "~/services";
+import userService from "~/services/apis/userService";
+import {IUserProfile} from "~/app/(authorized)/personal/interfaces";
 
 function Profile() {
-    const userData = useSelector((state: RootState) => state.userData);
-
     const nameRef = React.useRef<HTMLInputElement>(null);
     const avatarRef = React.useRef<HTMLInputElement>(null);
 
     const [changeName, setChangeName] = React.useState<string | null>(null);
     const [changeAvatar, setChangeAvatar] = React.useState<any>({url: images.avatarDefault, file: null});
 
-    const onChangeAvatar = (e: any) => {
-        e.preventDefault();
-        if (avatarRef.current) {
-            avatarRef.current.click();
-        }
-    }
+    console.log('changeAvatar:', changeAvatar);
+
+    const {data: userProfile} = useQuery({
+        queryFn: () => apiRequest({
+            api: async () => userService.getProfile(),
+            showMessageFailed: true
+        }),
+        select(userProfile: IUserProfile) {
+            console.log('user profile', userProfile);
+            if (!!userProfile.avatar){
+                setChangeAvatar({
+                    ...changeAvatar,
+                    url: process.env.NEXT_PUBLIC_IMAGE + userProfile.avatar
+                })
+            }
+            return userProfile;
+        },
+        queryKey: [QueryKey.profile],
+    })
 
     const onClickChangeName = () => {
         if (nameRef.current) {
@@ -41,26 +56,30 @@ function Profile() {
 
     return (
         <div className="bg-white min-h-full rounded-xl shadow-lg py-5 px-10">
-            <div className="flex items-center justify-between">
-                <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[200px]">
                     <div className="flex flex-col items-center justify-center w-full gap-3">
-                        {/*<Image src={userData?.avatar || images.avatarDefault} alt="avatar" width={200} height={200}/>*/}
+                        <Image
+                            src={changeAvatar.url}
+                            alt="avatar" width={150} height={150} style={{borderRadius: '16px'}}/>
                         {/*<div*/}
                         {/*    onClick={onChangeAvatar}*/}
                         {/*    className="w-full max-w-[200px] text-center text-md cursor-pointer transition-all bg-green-500 hover:bg-green-600 text-white rounded-lg py-2 px-4">*/}
                         {/*    Đổi avatar*/}
                         {/*</div>*/}
-                        <UploadSingleFile file={changeAvatar} setFile={setChangeAvatar} text={"Đổi avatar"}/>
+                        <UploadSingleFile file={changeAvatar} setFile={setChangeAvatar} text={"Đổi avatar"}
+                                          className="items-center justify-center w-full"
+                                          btnClassName="w-full max-w-[200px] text-center text-md cursor-pointer transition-all bg-green-500 hover:bg-green-600 text-white rounded-lg py-2 px-4"/>
                         <input id="input-change-avatar" type="file" hidden ref={avatarRef}/>
                     </div>
                 </div>
-                <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0">
+                <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[200px]">
                     <div className="flex flex-col items-start justify-start w-full gap-3">
                         <label htmlFor="fullName" className="block text-2xl font-medium text-gray-600">
                             Tên hiển thị:
                         </label>
                         <div className="relative w-full text-2xl font-medium text-gray-600">
-                            <input id="fullName" type="text" disabled value={changeName || userData?.fullName}
+                            <input id="fullName" type="text" disabled value={userProfile?.fullName ?? ""}
                                    ref={nameRef}
                                    className={
                                        clsx("w-full border border-gray-400 rounded-lg px-3 py-2 pr-12",
