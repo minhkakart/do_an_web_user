@@ -1,0 +1,150 @@
+'use client';
+import React from 'react';
+import Image from "next/image";
+import images from "~/constants/images";
+import {ProfileCircle} from "iconsax-react";
+import Link from "next/link";
+import {useSelector} from "react-redux";
+import {RootState, store} from "~/redux/store";
+import {KEY_STORAGE_TOKEN, PATH} from "~/constants/config";
+import Tippy from "@tippyjs/react";
+import TippyHeadless from '@tippyjs/react/headless';
+import {IoPersonCircleOutline} from "react-icons/io5";
+import {AiOutlineShop, AiOutlineShoppingCart} from "react-icons/ai";
+import {TbLogout2} from "react-icons/tb";
+import {useMutation} from "@tanstack/react-query";
+import {apiRequest} from "~/services";
+import authService from "~/services/apis/authService";
+import {useRouter} from "next/navigation";
+import {deleteItemStorage} from "~/commons/funcs/localStorage";
+import {logout, setIsLoggedIn} from "~/redux/appReducer";
+
+function Header({showSearch = true, showNav = true}: { showSearch?: boolean, showNav?: boolean }) {
+    const userData = useSelector((state: RootState) => state.userData);
+
+    const [showAvatarMenu, setShowAvatarMenu] = React.useState(false);
+
+    return (
+        <div className="absolute inset-y-0 z-999 w-full bg-green-300 h-[80px] flex items-center justify-center px-4">
+            <div id="header-container" className="container flex items-center justify-between">
+                <Link href={PATH.Home} id="logo" className="flex items-center justify-center">
+                    <Image src={images.logo} alt="Logo" width={100} height={100} className="w-[64px] h-[64px]" />
+                    <h1 className="uppercase font-bold text-2xl w-[180px] text-center text-blue-700">
+                        Enjoy Your Drinks
+                    </h1>
+                </Link>
+                {showSearch &&
+                    <div className="relative border border-gray-200 rounded-md shadow-lg">
+                        <input placeholder="Tìm kiếm" type="text"
+                               className="bg-amber-50 w-[400px] pl-4 py-2 pr-[120px] rounded-md"/>
+                        <button
+                            className="absolute right-0 top-1/2 -translate-y-1/2 bg-green-500 text-white px-4 py-2 rounded-md hover:cursor-pointer active:bg-green-600 transition-colors duration-75">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                }
+
+                <div id="user-info" className="flex items-center gap-4">
+
+                    <div className="flex items-center gap-2">
+                        <div className="relative">
+                            <AiOutlineShoppingCart
+                                style={{
+                                    width: 32,
+                                    height: 32,
+                                    color: 'black',
+                                    transform: 'scaleX(-1)',
+                                    transformOrigin: 'center center'
+                                }}
+                            />
+                            <span
+                                className="absolute text-sm text-white bg-red-600 rounded-full top-[calc(-10%)] left-[calc(-20%)] w-[16px] h-[16px] flex items-center justify-center">0</span>
+                        </div>
+                        {userData === null ?
+                            <Link href={PATH.Login} className="outline-none!">
+                                <Tippy content="Đăng nhập">
+                                    <ProfileCircle size="32" color="black"/>
+                                </Tippy>
+                            </Link> :
+                            <TippyHeadless
+                                maxWidth={'100%'}
+                                interactive
+                                visible={showAvatarMenu}
+                                onClickOutside={() => setShowAvatarMenu(false)}
+                                placement='bottom-end'
+                                render={(attrs: any) => <AvatarMenu onClose={() => setShowAvatarMenu(false)}/>}
+                            >
+                                <div className="relative" onClick={() => setShowAvatarMenu(!showAvatarMenu)}>
+                                    <Image
+                                        src={(!!userData.avatar) ? `${process.env.NEXT_PUBLIC_API}/${userData.avatar}` : images.avatarDefault}
+                                        alt="User" width={32} height={32}
+                                        objectFit={'cover'}
+                                        className="w-[32px] h-[32px] rounded-full object-cover"/>
+                                </div>
+                            </TippyHeadless>
+
+                        }
+                    </div>
+
+                </div>
+            </div>
+            {showNav &&
+                <div id="header-menu"
+                     className="absolute top-[80px] left-0 z-999 w-full bg-white shadow-lg flex items-center justify-center">
+                    <div className="container flex items-center justify-center gap-12 py-2">
+                        <Link href="/" className="text-gray-700 hover:text-green-700!">Trang chủ</Link>
+                        <Link href="#" className="text-gray-700 hover:text-green-700!">Sản phẩm</Link>
+                        <Link href="#" className="text-gray-700 hover:text-green-700!">Khuyến mãi</Link>
+                        <Link href="#" className="text-gray-700 hover:text-green-700!">Liên hệ</Link>
+                    </div>
+                </div>
+            }
+        </div>
+    );
+}
+
+export default Header;
+
+function AvatarMenu({onClose}: { onClose: () => void }) {
+    const router = useRouter();
+
+    const logoutFunc = useMutation({
+        mutationFn: () => apiRequest({
+            api: async () => authService.logout()
+        }),
+        onSuccess() {
+            deleteItemStorage(KEY_STORAGE_TOKEN);
+            store.dispatch(logout());
+            onClose();
+            router.replace(PATH.Home);
+            store.dispatch(setIsLoggedIn(false));
+        }
+    })
+
+    const handleLogout = () => {
+        logoutFunc.mutate();
+    };
+
+    return (
+        <div
+            className="absolute z-9999 right-0 top-[calc(100%+8px)] bg-white shadow-lg rounded-md w-[200px] flex flex-col">
+            <Link href={PATH.Personal}
+                  className="px-4 py-2 hover:bg-gray-100 hover:rounded-t-md cursor-pointer flex flex-row items-center justify-start gap-2 transition-all hover:text-green-700!">
+                <IoPersonCircleOutline style={{width: 24, height: 24, color: 'inherit'}}/>
+                <span>Thông tin cá nhân</span>
+            </Link>
+            <div
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-start gap-2 transition-all hover:text-green-700">
+                <AiOutlineShop style={{width: 24, height: 24, color: 'inherit'}}/>
+                <span>Đơn hàng của tôi</span>
+            </div>
+            <div
+                className="px-4 py-2 hover:bg-gray-100 hover:rounded-b-md cursor-pointer flex flex-row items-center justify-start gap-2 transition-all hover:text-green-700"
+                onClick={handleLogout}
+            >
+                <TbLogout2 style={{width: 24, height: 24, color: 'inherit'}}/>
+                <span>Đăng xuất</span>
+            </div>
+        </div>
+    );
+}
