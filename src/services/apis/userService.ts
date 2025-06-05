@@ -31,6 +31,19 @@ const useService = {
             cancelToken: tokenAxios,
         });
     },
+    getAccount: (tokenAxios?: any) => {
+        return axiosClient.get('/api/v1/User/profile/account', {
+            cancelToken: tokenAxios,
+        });
+    },
+    changePassword: (data: {
+        oldPassword: string;
+        newPassword: string;
+    }, tokenAxios?: any) => {
+        return axiosClient.post('/api/v1/User/profile/change-password', data, {
+            cancelToken: tokenAxios,
+        });
+    },
 }
 
 export default useService;

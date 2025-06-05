@@ -33,6 +33,9 @@ function SplashScreen({children}: PropsSplashScreen) {
     const appToken = useSelector((state: RootState) => state.token);
 
     useEffect(() => {
+        if (loadingToken){
+            return () => {};
+        }
         (async () => {
             if (appToken !== null) {
                 const res: IUserData = await apiRequest({
@@ -46,7 +49,7 @@ function SplashScreen({children}: PropsSplashScreen) {
             setLoadingToken(false);
             setLoadingToken(false);
         })();
-    }, [appToken]);
+    }, [appToken, loadingToken]);
 
     useEffect(() => {
         store.dispatch(setIsCheckingToken(true));

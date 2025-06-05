@@ -2,7 +2,7 @@ import axios, {AxiosResponse} from "axios";
 import {store} from "~/redux/store";
 import {IApiRequest, IBaseResponse, IToken} from "~/commons/interfaces";
 import {toastError, toastInfo, toastSuccess} from "~/commons/funcs/toast";
-import {logout, setIsLoggedIn, setIsTokenValid, setToken} from "~/redux/appReducer";
+import {logout, setIsCheckingToken, setIsLoggedIn, setIsTokenValid, setToken} from "~/redux/appReducer";
 import config from "../../postcss.config.mjs";
 import {setItemStorage} from "~/commons/funcs/localStorage";
 import {KEY_STORAGE_TOKEN} from "~/constants/config";
@@ -42,7 +42,7 @@ axiosClient.interceptors.response.use(
 );
 export default axiosClient;
 
-export const apiRequest: any = async (
+export const apiRequest = async (
     {
         api,
         setLoadingState,
@@ -77,14 +77,14 @@ export const apiRequest: any = async (
                 store.dispatch(setToken(refreshResult.data))
                 setItemStorage(KEY_STORAGE_TOKEN, refreshResult.data);
                 // Retry the original API request with the new token
-                return await apiRequest({
-                    api,
-                    setLoadingState,
-                    msgSuccess,
-                    showMessageSuccess,
-                    showMessageFailed,
-                    onError
-                })
+                response = await api();
+                // Success
+                if (response.error.code === 1) {
+                    showMessageSuccess && toastSuccess({msg: msgSuccess});
+                    return response.data === null ? true : response.data;
+                } else {
+                    throw response.error;
+                }
             } else {
                 throw refreshResult.error;
             }
@@ -107,6 +107,7 @@ export const apiRequest: any = async (
             case 401:
                 showMessageFailed && toastError({msg: 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại'});
                 store.dispatch(logout());
+                store.dispatch(setIsCheckingToken(false));
                 store.dispatch(setIsLoggedIn(false));
                 store.dispatch(setIsTokenValid(false));
                 break;

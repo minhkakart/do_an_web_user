@@ -15,11 +15,27 @@ function Page() {
     const currentParams = new URLSearchParams(searchParams.toString());
 
     const [currentNav, setCurrentNav] = useState<IPersonalNav | null>(null);
-    const [showFullNav, setShowFullNav] = useState<boolean>(true);
+    const [showFullNav, setShowFullNav] = useState<boolean>(window.innerWidth >= 1024);
 
     const findCurrentNav = useCallback(() => {
         return PersonalTabs.find(nav => nav.id === tab) || null;
     }, [PersonalTabs, tab]);
+
+    const handleResize = useCallback(() => {
+        const width = window.innerWidth;
+        if (width < 1024) {
+            setShowFullNav(false);
+        }
+
+    }, [])
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize)
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        }
+    }, []);
 
     useEffect(() => {
         if (!tab) {
@@ -38,7 +54,7 @@ function Page() {
             <div
                 className="relative min-h-[calc(100vh-80px)] max-h-screen w-full bg-gray-100 inline-flex overflow-y-hidden mt-[80px]">
                 <div id="profile-side"
-                     className={clsx("inset-0 z-99 flex flex-col items-center justify-start min-h-full w-[320px] bg-white shadow-sm py-4 px-2 shrink-0 gap-3", {
+                     className={clsx("inset-0 z-99 flex flex-col items-center justify-start min-h-full w-[320px] bg-white shadow-md py-4 px-2 shrink-0 gap-3", {
                          'w-fit!': !showFullNav,
                          'max-lg:absolute': showFullNav
                      })}>
@@ -65,7 +81,7 @@ function Page() {
                     })}
                 </div>
                 <div id="profile-main-content" className="relative min-h-full w-full bg-gray-200 overflow-y-scroll">
-                    <div className="absolute w-full min-h-full overflow-y-scroll p-4">
+                    <div className="absolute w-full min-h-full overflow-y-scroll bg-white pt-6 pb-12 px-10">
                         {currentNav && <currentNav.component/>}
                     </div>
                 </div>

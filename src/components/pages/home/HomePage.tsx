@@ -43,7 +43,7 @@ function HomePage() {
         }
     ];
 
-    const {data: listBanner, isLoading: loadingBanner} = useQuery<string[]>({
+    const {data: listBanner} = useQuery<string[]>({
         queryFn: () => {
             return apiRequest({
                 api: async () => bannerService.getBanner()
@@ -57,10 +57,6 @@ function HomePage() {
         },
         queryKey: [],
     })
-
-    if (loadingBanner) {
-        return <Loading loading={true}/>
-    }
 
     return (
         <div className="flex flex-col gap-3 w-full h-full">

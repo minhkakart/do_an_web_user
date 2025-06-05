@@ -149,9 +149,10 @@ function Profile() {
     return (
         <>
             <Loading loading={changeAvatarMutation.isPending || changeProfileMutation.isPending}/>
-            <div className="bg-white min-h-[calc(100vh-112px)] min-w-fit rounded-xl shadow-lg pt-8 pb-12 px-10 gap-5 flex flex-col">
+            <div className="bg-white min-w-fit gap-5 flex flex-col">
+                <h1 className="text-2xl font-bold mb-4">Thông tin cá nhân</h1>
                 <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[200px] max-sm:w-full">
+                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[150px] max-sm:w-full">
                         <div className="flex flex-col items-center justify-center w-full gap-3">
                             <Image
                                 src={changeAvatar.url}
@@ -179,7 +180,7 @@ function Profile() {
                             <input id="input-change-avatar" type="file" hidden ref={avatarRef}/>
                         </div>
                     </div>
-                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[200px] max-sm:w-full">
+                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[150px] max-sm:w-full">
                         <div className="flex flex-col items-start justify-start w-full gap-3">
                             <label htmlFor="fullName" className="block text-2xl font-medium text-gray-600">
                                 Tên hiển thị:
@@ -201,12 +202,6 @@ function Profile() {
                                                fullName: e.target.value
                                            });
                                        }}
-                                       onBlur={() => cancelChange(nameRef, () => setChangingName(false), () => {
-                                           setFormProfile({
-                                               ...formProfile,
-                                               fullName: userProfile?.fullName || ""
-                                           })
-                                       })}
                                 />
                                 <ToggleModifier
                                     changeCondition={changingName}
@@ -226,7 +221,7 @@ function Profile() {
                     </div>
                 </div>
                 <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[200px] max-sm:w-full">
+                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[150px] max-sm:w-full">
                         <div className="flex flex-col items-start justify-start w-full gap-3">
                             <label htmlFor="phone" className="block text-2xl font-medium text-gray-600">
                                 Số điện thoại:
@@ -249,12 +244,6 @@ function Profile() {
                                                phone: e.target.value === "" ? null : e.target.value
                                            });
                                        }}
-                                       onBlur={() => cancelChange(phoneRef, () => setChangingPhone(false), () => {
-                                           setFormProfile({
-                                               ...formProfile,
-                                               phone: userProfile?.phone ?? null
-                                           })
-                                       })}
                                 />
                                 <ToggleModifier
                                     changeCondition={changingPhone}
@@ -272,13 +261,13 @@ function Profile() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[200px] max-sm:w-full">
+                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[150px] max-sm:w-full">
                         <div className="flex flex-col items-start justify-start w-full gap-3">
                             <label htmlFor="phone" className="block text-2xl font-medium text-gray-600">
                                 Email:
                             </label>
                             <div className="relative w-full text-2xl font-medium text-gray-600">
-                                <input id="phone" type="text" disabled value={formProfile.email || ""}
+                                <input id="email" type="text" disabled value={formProfile.email || ""}
                                        placeholder="Nhập email"
                                        ref={emailRef}
                                        className={
@@ -295,12 +284,6 @@ function Profile() {
                                                email: e.target.value === "" ? null : e.target.value
                                            });
                                        }}
-                                       onBlur={() => cancelChange(emailRef, () => setChangingEmail(false), () => {
-                                           setFormProfile({
-                                               ...formProfile,
-                                               email: userProfile?.email ?? null
-                                           })
-                                       })}
                                 />
                                 <ToggleModifier
                                     changeCondition={changingEmail}
@@ -320,13 +303,13 @@ function Profile() {
                     </div>
                 </div>
                 <div className="flex items-center justify-between flex-wrap gap-4">
-                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[200px] max-sm:w-full">
+                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[150px] max-sm:w-full">
                         <div className="flex flex-col items-start justify-start w-full gap-3">
                             <label htmlFor="phone" className="block text-2xl font-medium text-gray-600">
                                 Ngày sinh:
                             </label>
                             <div className="relative w-full text-2xl font-medium text-gray-600">
-                                <input id="phone" type="date" disabled value={formProfile.birthday || ""}
+                                <input id="birthday" type="date" disabled value={formProfile.birthday || ""}
                                        placeholder="Nhập ngày sinh"
                                        ref={birthRef}
                                        className={
@@ -343,12 +326,6 @@ function Profile() {
                                                birthday: e.target.value === "" ? null : e.target.value
                                            });
                                        }}
-                                       onBlur={() => cancelChange(birthRef, () => setChangingBirth(false), () => {
-                                           setFormProfile({
-                                               ...formProfile,
-                                               birthday: userProfile?.birthday ?? null
-                                           })
-                                       })}
                                 />
                                 <ToggleModifier
                                     changeCondition={changingBirth}
@@ -366,7 +343,7 @@ function Profile() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[200px] max-sm:w-full">
+                    <div className="flex flex-col items-start justify-start w-[calc(50%-12px)] shrink-0 min-w-[150px] max-sm:w-full">
                         <div className="flex flex-col items-start justify-start w-full gap-3">
                             <label htmlFor="gender" className="block text-2xl font-medium text-gray-600">
                                 Giới tính:
@@ -375,12 +352,6 @@ function Profile() {
                                 <select name="gender" id="gender"
                                         ref={genderRef}
                                         disabled={!changingGender}
-                                        onBlur={() => cancelChange(genderRef, () => setChangingGender(false), () => {
-                                            setFormProfile({
-                                                ...formProfile,
-                                                gender: userProfile?.gender ?? 0
-                                            })
-                                        })}
                                         onChange={(e: any) => {
                                             setFormProfile({
                                                 ...formProfile,
@@ -395,9 +366,10 @@ function Profile() {
                                                 }
                                             )
                                         }
+                                        value={formProfile.gender}
                                 >
-                                    <option value="0" selected={formProfile.gender === 0}>Nam</option>
-                                    <option value="1" selected={formProfile.gender === 1}>Nữ</option>
+                                    <option value={0}>Nam</option>
+                                    <option value={1}>Nữ</option>
                                 </select>
                                 <ToggleModifier
                                     changeCondition={changingGender}
@@ -439,16 +411,25 @@ function ToggleModifier({changeCondition, onChange, onCancel, onSave}: {
                     <div
                         className="absolute z-999 flex right-0 top-1/2 transform -translate-y-1/2 cursor-pointer h-full aspect-auto items-center justify-center">
                         <IoCloseCircleOutline
-                            onClick={() => onCancel()}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onCancel();
+                            }}
                             style={{width: 32, height: 32, color: "#ff2d55"}}/>
                         <BsCheck2Circle
-                            onClick={() => onSave()}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onSave();
+                            }}
                             style={{width: 32, height: 32, color: "#4cd964"}}/>
                     </div>
                     :
                     <div
                         className="absolute z-999 flex right-0 top-1/2 transform -translate-y-1/2 cursor-pointer h-full aspect-square items-center justify-center"
-                        onClick={() => onChange()}>
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onChange();
+                        }}>
                         <HiOutlinePencilSquare
                             style={{width: 32, height: 32, color: "#4a5565"}}/>
                     </div>
