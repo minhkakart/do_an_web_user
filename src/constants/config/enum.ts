@@ -5,6 +5,12 @@ export enum QueryKey {
     tableVoucher,
     tableBanner,
     profile,
+    account,
+    listAddress,
+    listProvince,
+    listDistrict,
+    listWard,
+    getDetailAddress,
 }
 
 export enum UserRole {
@@ -31,4 +37,9 @@ export enum BooleanType {
 export enum VoucherState {
     NotUse = 0,
     InUse = 1
+}
+
+export enum TypeAddress {
+    Home = 0,
+    Work
 }

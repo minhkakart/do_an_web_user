@@ -1,11 +1,11 @@
 import axios, {AxiosResponse} from "axios";
 import {store} from "~/redux/store";
 import {IApiRequest, IBaseResponse, IToken} from "~/commons/interfaces";
-import {toastError, toastInfo, toastSuccess} from "~/commons/funcs/toast";
+import {ToastCustom} from "~/commons/funcs/toast";
 import {logout, setIsCheckingToken, setIsLoggedIn, setIsTokenValid, setToken} from "~/redux/appReducer";
-import config from "../../postcss.config.mjs";
 import {setItemStorage} from "~/commons/funcs/localStorage";
 import {KEY_STORAGE_TOKEN} from "~/constants/config";
+import {toast} from "react-toastify";
 
 const axiosClient = axios.create({
     headers: {
@@ -60,7 +60,7 @@ export const apiRequest = async (
 
         // Success
         if (response.error.code === 1) {
-            showMessageSuccess && toastSuccess({msg: msgSuccess});
+            showMessageSuccess && toast.success(msgSuccess, ToastCustom.toastSuccess);
             return response.data === null ? true : response.data;
         }
 
@@ -80,7 +80,7 @@ export const apiRequest = async (
                 response = await api();
                 // Success
                 if (response.error.code === 1) {
-                    showMessageSuccess && toastSuccess({msg: msgSuccess});
+                    showMessageSuccess && toast.success(msgSuccess, ToastCustom.toastSuccess);
                     return response.data === null ? true : response.data;
                 } else {
                     throw response.error;
@@ -91,34 +91,33 @@ export const apiRequest = async (
         }
 
         // Custom error
-        showMessageFailed && toastError({msg: response.error.message || "Có lỗi xảy ra"});
+        showMessageFailed && toast.error((response.error.message || "Có lỗi xảy ra"), ToastCustom.toastError);
     } catch (error: any) {
         onError && onError(error);
 
         // Axios error
         if (error.code == 'ERR_NETWORK' || error.code == 'ECONNABORTED') {
-            console.log('Lỗi kết nối internet')
-            showMessageFailed && toastInfo({msg: 'Lỗi kết nối internet'});
+            showMessageFailed && toast.info('Lỗi kết nối internet', ToastCustom.toastInfo);
             // throw error;
         }
 
         // Custom error
         switch (error.status || error.code) {
             case 401:
-                showMessageFailed && toastError({msg: 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại'});
+                showMessageFailed && toast.error('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại', ToastCustom.toastError);
                 store.dispatch(logout());
                 store.dispatch(setIsCheckingToken(false));
                 store.dispatch(setIsLoggedIn(false));
                 store.dispatch(setIsTokenValid(false));
                 break;
             case 403:
-                showMessageFailed && toastError({msg: 'Bạn không có quyền truy cập'});
+                showMessageFailed && toast.error('Bạn không có quyền truy cập', ToastCustom.toastError);
                 break;
             case 500:
-                showMessageFailed && toastError({msg: 'Lỗi hệ thống, vui lòng thử lại sau'});
+                showMessageFailed && toast.error('Lỗi hệ thống, vui lòng thử lại sau', ToastCustom.toastError);
                 break;
             default:
-                showMessageFailed && toastError({msg: error.message || 'Có lỗi xảy ra'});
+                showMessageFailed && toast.error((error.message || 'Có lỗi xảy ra'), ToastCustom.toastError);
                 break;
         }
         // throw error;

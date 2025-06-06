@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {apiRequest} from "~/services";
@@ -7,6 +8,7 @@ import Button from "~/components/common/Button";
 import Popup from "~/components/common/Popup";
 import Form, {FormContext, Input} from "~/components/common/Form";
 import {FolderOpen} from "iconsax-react";
+import {QueryKey} from "~/constants/config/enum";
 
 function Account() {
     const [changingPassword, setChangingPassword] = React.useState(false);
@@ -18,7 +20,7 @@ function Account() {
         select(data) {
             return data;
         },
-        queryKey: []
+        queryKey: [QueryKey.account]
     })
 
     return (

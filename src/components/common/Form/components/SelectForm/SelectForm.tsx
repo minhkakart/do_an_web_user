@@ -1,4 +1,3 @@
-'use client';
 import React, {useEffect, useRef, useState} from 'react';
 import TippyHeadless from '@tippyjs/react/headless';
 
@@ -112,9 +111,9 @@ function SelectForm<OptionType>({
 										const key = removeVietnameseTones(keyword || '');
 										return label.includes(key);
 									})
-									?.map((opt, index) => (
+									?.map((opt) => (
 										<div
-											key={getOptionValue(opt) || index}
+											key={getOptionValue(opt)}
 											className={clsx(styles.option, {
 												[styles.active]: getOptionValue(opt) === value,
 											})}

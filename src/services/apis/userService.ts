@@ -1,6 +1,6 @@
 import axiosClient from "~/services";
 
-const useService = {
+const userService = {
     getProfile: (
         tokenAxios?: any
     ) => {
@@ -46,4 +46,4 @@ const useService = {
     },
 }
 
-export default useService;
+export default userService;

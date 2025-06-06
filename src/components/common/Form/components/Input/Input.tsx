@@ -7,8 +7,8 @@ import {useContext, useEffect, useState} from 'react';
 import {FormContext} from '../../contexts';
 import clsx from 'clsx';
 import styles from './Input.module.scss';
-import {isEmail, isPhoneNumber, isShipCode, isLicensePalate} from '~/commons/funcs/validate';
 import {convertCoin, price} from '~/commons/funcs/convertCoin';
+import {isEmail, isLicensePalate, isPhoneNumber, isShipCode} from "~/commons/funcs/validate";
 
 function Input({
 	label,

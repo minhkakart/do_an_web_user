@@ -1,4 +1,4 @@
-export function validateEmail(value: string) {
+export function isEmail(value: string) {
 	return !!value
 		?.trim()
 		.toLowerCase()
@@ -7,8 +7,21 @@ export function validateEmail(value: string) {
 		);
 }
 
-export function validatePhoneNumber(phoneNumber: string) {
+export function isPhoneNumber(phoneNumber: string) {
 	const vietnamPhoneRegex = /^(03|05|07|08|09)[0-9]{8}$/;
 
 	return vietnamPhoneRegex.test(phoneNumber);
+}
+
+export function isShipCode(shipCode: string) {
+	const shipCodeRegex = /^[A-Z]{2}\d{4}$/;
+
+	return shipCodeRegex.test(shipCode);
+}
+
+export function isLicensePalate(licensePalate: string) {
+	const licensePalateRegex = /^[0-9]{2}[A-Z]{1}-[0-9]{3}[0-9]{2}$/;
+	//example: 43A-12345
+
+	return licensePalateRegex.test(licensePalate);
 }

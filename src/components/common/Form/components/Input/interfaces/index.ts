@@ -20,6 +20,8 @@ export interface PropsInput {
 	placeholder: string;
 	unit?: string;
 
+	nullable?: boolean;
+
 	onClick?: () => void;
 
 	[props: string]: any;

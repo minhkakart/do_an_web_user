@@ -18,3 +18,12 @@ export interface IUpdateProfileRequest {
     gender: number;
     birthday: string | null;
 }
+
+export interface IUserAddressDto extends IBaseDto {
+    customerName: string;
+    phone: string;
+    address: string;
+    type: number;
+    isDefault: boolean | null;
+    fullAddress: string;
+}

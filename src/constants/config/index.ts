@@ -6,7 +6,6 @@ import {PiMapPinAreaBold} from "react-icons/pi";
 import Addresses from "~/app/(authorized)/personal/Addresses";
 import {MdOutlineManageAccounts} from "react-icons/md";
 import Account from "~/app/(authorized)/personal/Account";
-import React from "react";
 import {IPersonalNav} from "~/commons/interfaces";
 
 export const APP_NAME = 'USER_EYD';

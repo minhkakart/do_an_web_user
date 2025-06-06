@@ -17,7 +17,6 @@ import 'lightgallery/css/lg-zoom.css';
 import 'lightgallery/css/lg-video.css';
 import 'lightgallery/css/lg-share.css';
 import AppProvider from "~/contexts/AppProvider";
-import '~/styles/_globals.scss';
 
 const geistSans = Geist({
     variable: "--font-geist-sans",

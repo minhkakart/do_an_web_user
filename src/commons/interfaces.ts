@@ -52,3 +52,24 @@ export interface IPersonalNav {
     icon: any,
     component: React.ElementType,
 }
+
+export interface IProvinceDto extends IBaseDetailAddressUnitDto {
+    phoneCode: number;
+}
+
+export interface IDistrictDto extends IBaseDetailAddressUnitDto {
+    provinceCode: number;
+    provinceId: number;
+}
+
+export interface IWardDto extends IBaseDetailAddressUnitDto {
+    districtCode: number;
+    districtId: number;
+}
+
+interface IBaseDetailAddressUnitDto extends IBaseDto {
+    code: number;
+    name: string;
+    codename: string;
+    divisionType: string;
+}
