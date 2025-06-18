@@ -5,45 +5,59 @@ import SimpleImageSlider from "react-simple-image-slider";
 import {useQuery} from "@tanstack/react-query";
 import bannerService from "~/services/apis/bannerService";
 import {apiRequest} from "~/services";
-import Loading from "~/components/common/Loading";
 import CartItem from "~/components/common/CardItem/CartItem";
+import productService from "~/services/apis/productService";
+import {ProductSpecial, ProductType, QueryKey} from "~/constants/config/enum";
+import {IPageResponse} from "~/commons/interfaces";
+import {IProductCartDto} from "~/components/pages/home/interfaces";
 
 function HomePage() {
 
-    const bestSellers = [
-        {
-            id: 1,
-            name: "Hồng Trà Đào",
-            price: 25000,
-            imageUrl: "https://s3-hcmc02.higiocloud.vn/images/2025/02/hong-tra-dao-20250205072158.png"
+    const {data: bestSellers, isFetched: loadedBestSellers} = useQuery({
+        queryFn: async () => {
+            return await apiRequest({
+                api: async () => productService.getProducts({
+                    page: 1,
+                    size: 5,
+                    categoryId: null,
+                    keyword: '',
+                    special: ProductSpecial.BestSeller,
+                    type: ProductType.Main
+                })
+            })
         },
-        {
-            id: 2,
-            name: "Trà Bá Tước Lựu Đỏ",
-            price: 27000,
-            imageUrl: "https://s3-hcmc02.higiocloud.vn/images/2025/02/tra-ba-tuoc-luu-do-20250205072548.png"
+        select(data: IPageResponse<IProductCartDto>) {
+            if (!!data) {
+                return data;
+            }
+            return {items: [], pagination: {totalCount: 0, totalPage: 0}} as IPageResponse<IProductCartDto>;
         },
-        {
-            id: 3,
-            name: "Trà Lucky Tea",
-            price: 35000,
-            imageUrl: "https://s3-hcmc02.higiocloud.vn/images/2025/02/lucky-tea-20250205072302.png"
-        },
-        {
-            id: 4,
-            name: "Trà Ô Long Dâu",
-            price: 20000,
-            imageUrl: "https://s3-hcmc02.higiocloud.vn/images/2025/02/lucky-tea-20250205072302.png"
-        },
-        {
-            id: 5,
-            name: "Trà Ô Long Dâu",
-            price: 20000,
-            imageUrl: "https://s3-hcmc02.higiocloud.vn/images/2025/02/lucky-tea-20250205072302.png"
-        }
-    ];
+        queryKey: [QueryKey.bestSellers],
+    })
 
-    const {data: listBanner} = useQuery<string[]>({
+    const {data: remarked, isFetched: loadedRemarked} = useQuery({
+        queryFn: async () => {
+            return await apiRequest({
+                api: async () => productService.getProducts({
+                    page: 1,
+                    size: 5,
+                    categoryId: null,
+                    keyword: '',
+                    special: ProductSpecial.Remarked,
+                    type: ProductType.Main
+                })
+            })
+        },
+        select(data: IPageResponse<IProductCartDto>) {
+            if (!!data) {
+                return data;
+            }
+            return {items: [], pagination: {totalCount: 0, totalPage: 0}} as IPageResponse<IProductCartDto>;
+        },
+        queryKey: [QueryKey.remarked],
+    })
+
+    const {data: listBanner} = useQuery({
         queryFn: () => {
             return apiRequest({
                 api: async () => bannerService.getBanner()
@@ -55,7 +69,7 @@ function HomePage() {
             }
             return [];
         },
-        queryKey: [],
+        queryKey: [QueryKey.listBanner],
     })
 
     return (
@@ -76,16 +90,30 @@ function HomePage() {
                 }
             </div>
 
-            <div className="region-wrapper flex flex-col gap-3 items-center justify-center w-full mt-10">
-                <div className="title text-3xl text-[#006f3c] font-semibold text-center capitalize">
-                    Best Sellers
+            {loadedBestSellers &&
+                <div className="region-wrapper flex flex-col gap-3 items-center justify-center w-full mt-10">
+                    <div className="title text-3xl text-[#006f3c] font-semibold text-center capitalize">
+                        Best Sellers
+                    </div>
+                    <div className="flex flex-wrap gap-8 justify-center w-full">
+                        {bestSellers && bestSellers.items.map(item => (
+                            <CartItem key={item.id} item={item}/>
+                        ))}
+                    </div>
                 </div>
-                <div className="flex flex-wrap gap-8 justify-center w-full">
-                    {bestSellers.map(item => (
-                        <CartItem key={item.id} item={item}/>
-                    ))}
+            }
+            {loadedRemarked &&
+                <div className="region-wrapper flex flex-col gap-3 items-center justify-center w-full mt-10">
+                    <div className="title text-3xl text-[#006f3c] font-semibold text-center capitalize">
+                        Sản phẩm nổi bật
+                    </div>
+                    <div className="flex flex-wrap gap-8 justify-center w-full">
+                        {remarked && remarked.items.map(item => (
+                            <CartItem key={item.id} item={item}/>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     );
 }

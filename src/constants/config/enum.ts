@@ -11,6 +11,11 @@ export enum QueryKey {
     listDistrict,
     listWard,
     getDetailAddress,
+    bestSellers,
+    remarked,
+    listBanner,
+    cartUser,
+    productWithSize,
 }
 
 export enum UserRole {
@@ -42,4 +47,15 @@ export enum VoucherState {
 export enum TypeAddress {
     Home = 0,
     Work
+}
+
+export enum ProductSpecial {
+    Both = 0,
+    BestSeller = 1,
+    Remarked = 2
+}
+
+export enum ProductType {
+    Main = 1,
+    Topping
 }

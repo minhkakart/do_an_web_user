@@ -73,3 +73,8 @@ interface IBaseDetailAddressUnitDto extends IBaseDto {
     codename: string;
     divisionType: string;
 }
+
+export interface IFormProps {
+    queryKeys: number[];
+    onClose?: () => void;
+}

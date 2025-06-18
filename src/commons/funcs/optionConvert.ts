@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 export function removeVietnameseTones(str: string): string {
 	return str
 		.trim()
@@ -125,4 +123,30 @@ export function numberToWords(number: number) {
 	result = result.trim().replace(/\s+/g, ' ');
 	result = result.charAt(0).toUpperCase() + result.slice(1) + ' đồng';
 	return result;
+}
+
+
+export function toQueryString(params: any){
+	const queryString = Object.keys(params)
+		.map(key => {
+			const value = params[key];
+			if (value === null || value === undefined) {
+				return '';
+			}
+			return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+		})
+		.filter(part => part !== '')
+		.join('&');
+
+	return queryString ? `?${queryString}` : '';
+}
+
+export function resourceUrl(url: string | null | undefined): string {
+	if (!url) {
+		return '';
+	}
+	if (url.startsWith('http://') || url.startsWith('https://')) {
+		return url;
+	}
+	return `${process.env.NEXT_PUBLIC_API}/${url}`;
 }
