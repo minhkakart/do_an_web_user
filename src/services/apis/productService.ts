@@ -9,6 +9,7 @@ const productService = {
         categoryId: number | null;
         page: number;
         size: number;
+        isPaging: boolean;
     }, tokenAxios?: any) => {
         return axiosClient.get('/api/v1/Product/list-products' + toQueryString(params), {
             cancelToken: tokenAxios,
@@ -18,7 +19,12 @@ const productService = {
         return axiosClient.get(`/api/v1/Product/product-with-sizes/${productId}`, {
             cancelToken: tokenAxios,
         })
-    }
+    },
+    getProductWithSizesByProductSize: async (productSizeId: number, tokenAxios?: any) => {
+        return axiosClient.get(`/api/v1/Product/product-with-sizes-by-product-size/${productSizeId}`, {
+            cancelToken: tokenAxios,
+        })
+    },
 }
 
 export default productService;

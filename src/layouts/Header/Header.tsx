@@ -29,7 +29,7 @@ function Header({showSearch = true, showNav = true}: { showSearch?: boolean, sho
     const [showAvatarMenu, setShowAvatarMenu] = React.useState(false);
 
     return (
-        <div className="absolute inset-y-0 z-99 w-full bg-green-300 h-[80px] flex items-center justify-center px-4">
+        <div className="fixed inset-y-0 z-99 w-full bg-green-300 h-[80px] flex items-center justify-center px-4">
             <div id="header-container" className="container flex items-center justify-between">
                 <Link href={PATH.Home} id="logo" className="flex items-center justify-center">
                     <Image src={images.logo} alt="Logo" width={100} height={100} className="w-[64px] h-[64px]"/>

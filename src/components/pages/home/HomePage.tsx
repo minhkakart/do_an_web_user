@@ -5,7 +5,7 @@ import SimpleImageSlider from "react-simple-image-slider";
 import {useQuery} from "@tanstack/react-query";
 import bannerService from "~/services/apis/bannerService";
 import {apiRequest} from "~/services";
-import CartItem from "~/components/common/CardItem/CartItem";
+import CardItem from "~/components/common/CardItem/CardItem";
 import productService from "~/services/apis/productService";
 import {ProductSpecial, ProductType, QueryKey} from "~/constants/config/enum";
 import {IPageResponse} from "~/commons/interfaces";
@@ -22,7 +22,8 @@ function HomePage() {
                     categoryId: null,
                     keyword: '',
                     special: ProductSpecial.BestSeller,
-                    type: ProductType.Main
+                    type: ProductType.Main,
+                    isPaging: true
                 })
             })
         },
@@ -44,7 +45,8 @@ function HomePage() {
                     categoryId: null,
                     keyword: '',
                     special: ProductSpecial.Remarked,
-                    type: ProductType.Main
+                    type: ProductType.Main,
+                    isPaging: true
                 })
             })
         },
@@ -97,7 +99,7 @@ function HomePage() {
                     </div>
                     <div className="flex flex-wrap gap-8 justify-center w-full">
                         {bestSellers && bestSellers.items.map(item => (
-                            <CartItem key={item.id} item={item}/>
+                            <CardItem key={item.id} item={item}/>
                         ))}
                     </div>
                 </div>
@@ -109,7 +111,7 @@ function HomePage() {
                     </div>
                     <div className="flex flex-wrap gap-8 justify-center w-full">
                         {remarked && remarked.items.map(item => (
-                            <CartItem key={item.id} item={item}/>
+                            <CardItem key={item.id} item={item}/>
                         ))}
                     </div>
                 </div>

@@ -16,6 +16,8 @@ export enum QueryKey {
     listBanner,
     cartUser,
     productWithSize,
+    cartProductItem,
+    topping,
 }
 
 export enum UserRole {
