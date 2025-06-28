@@ -4,6 +4,9 @@ const cartService = {
     getUserCart: (tokenAxios?: any) => {
         return axiosClient.get('/api/v1/Cart', {cancelToken: tokenAxios});
     },
+    getUserCartDetail: (tokenAxios?: any) => {
+        return axiosClient.get('/api/v1/Cart/detail', {cancelToken: tokenAxios});
+    },
     addToCart: (body: { productSizeId: number, quantity: number, toppingIds: number[] }, tokenAxios?: any) => {
         return axiosClient.post(`/api/v1/Cart/add-to-cart`, body, {cancelToken: tokenAxios});
     },

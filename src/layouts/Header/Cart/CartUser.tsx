@@ -19,6 +19,8 @@ import {convertCoin} from "~/commons/funcs/convertCoin";
 import Loading from "~/components/common/Loading";
 import {useDebounce} from "~/commons/hooks/useDebounce";
 import {IProductCartDto} from "~/components/pages/home/interfaces";
+import Link from "next/link";
+import {Paths} from "~/constants/config";
 
 function CartUser() {
     const [openForm, setOpenForm] = useState(false);
@@ -94,16 +96,21 @@ function FormCartUser({queryKeys, onClose, cartData}: IFormCartUserProps) {
                         <p>{convertCoin(cartData.totalPrice)} VNĐ</p>
                     </div>
                 </div>
-                <div
-                    className="flex justify-center items-center text-white text-lg bg-green-600 cursor-pointer py-4 hover:bg-green-700">
-                    Mua hàng
-                </div>
+                {cartData.listCart.length === 0 ?
+                    <></>
+                    :
+                    <Link
+                        href={Paths.checkout}
+                        className="flex justify-center items-center text-white! text-lg bg-green-600 cursor-pointer py-4 hover:bg-green-700">
+                        Mua hàng
+                    </Link>
+                }
             </div>
         </>
     );
 }
 
-function CartItem({item}: { item: ICartDto}) {
+function CartItem({item}: { item: ICartDto }) {
     const queryClient = useQueryClient();
     const [formCartItem, setFormCartItem] = useState<ICartDto>(item);
     const [allowUpdate, setAllowUpdate] = useState<boolean>(false);
@@ -236,10 +243,6 @@ function CartItem({item}: { item: ICartDto}) {
                         <div>
                             <p>Đơn
                                 giá: {convertCoin((cartProductItem?.price ?? 0) + (cartProductItem?.sizePrices.find(x => x.id === formCartItem.productSizeId)?.price ?? 0))}VNĐ</p>
-                        </div>
-                        <div>
-                            <p>Giảm
-                                giá/món: {cartProductItem?.discount}{cartProductItem?.discountType === TypeDiscount.Absolute ? "VNĐ" : "%"}</p>
                         </div>
                         <div className="flex flex-col gap-1">
                             <p>Chọn topping: </p>

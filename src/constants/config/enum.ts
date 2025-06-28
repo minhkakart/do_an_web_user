@@ -18,6 +18,9 @@ export enum QueryKey {
     productWithSize,
     cartProductItem,
     topping,
+    cartUserDetail,
+    listUserOrder,
+    listProductSearch,
 }
 
 export enum UserRole {
@@ -60,4 +63,35 @@ export enum ProductSpecial {
 export enum ProductType {
     Main = 1,
     Topping
+}
+
+export enum PaymentMethod {
+    Cash = 1,
+    Momo,
+    VnPay
+}
+
+export enum OrderStatus {
+    Pending = 0,
+    Approved = 1,
+    Making = 2,
+    Delivering = 3,
+    Finished = 4,
+    Cancelled = 5,
+    UserCanceled = 6,
+}
+
+export const VnPayResponseCode = {
+    Success: '00',
+    UserCancelled: '24',
+    Error: '97',
+    Timeout: '99',
+    Fail: '01',
+    Invalid: '02',
+    InvalidSignature: '03',
+    InvalidTransaction: '04',
+    InvalidAmount: '05',
+    InvalidBankCode: '06',
+    InvalidOrderId: '07',
+    InvalidTransactionNo: '08',
 }

@@ -22,10 +22,11 @@ export const allowFiles = [
     'image/png',
 ];
 
-export enum PATH {
+export enum Paths {
     Home = '/',
     Login = '/login',
     Personal = '/personal',
+    checkout = '/checkout',
 }
 
 

@@ -81,7 +81,7 @@ function Page() {
                     })}
                 </div>
                 <div id="profile-main-content" className="relative min-h-full w-full bg-gray-200 overflow-y-scroll">
-                    <div className="absolute w-full min-h-full overflow-y-scroll bg-white pt-6 pb-12 px-10">
+                    <div className="absolute flex w-full min-h-full overflow-y-scroll bg-white pt-6 pb-12 px-10">
                         {currentNav && <currentNav.component/>}
                     </div>
                 </div>

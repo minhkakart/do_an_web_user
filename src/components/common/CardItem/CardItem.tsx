@@ -1,19 +1,16 @@
 'use client'
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {IProductCartDto} from "~/components/pages/home/interfaces";
 import {resourceUrl} from "~/commons/funcs/optionConvert";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {apiRequest} from "~/services";
 import cartService from "~/services/apis/cartService";
 import Loading from "~/components/common/Loading";
-import {ProductSpecial, ProductType, QueryKey, TypeDiscount} from "~/constants/config/enum";
+import {ProductType, QueryKey} from "~/constants/config/enum";
 import {IFormProps, IPageResponse} from "~/commons/interfaces";
 import Popup from "~/components/common/Popup";
 import productService from "~/services/apis/productService";
 import {IProductWithSizesDto} from "~/components/common/CardItem/interfaces";
-import Form, {FormContext} from "~/components/common/Form";
-import Button from "~/components/common/Button";
-import {FolderOpen} from "iconsax-react";
 import Image from "next/image";
 import clsx from "clsx";
 import {convertCoin} from "~/commons/funcs/convertCoin";
@@ -29,7 +26,7 @@ function CardItem({item}: ICartItemProps) {
     return (
         <>
             <div
-                className="bg-white rounded-xl shadow-md flex flex-col items-center p-4 transition-transform hover:scale-105 hover:cursor-pointer min-w-[18%] max-md:min-w-[45%] md:max-lg:min-w-[28%]"
+                className="bg-white rounded-xl shadow-md flex flex-col items-center p-4 transition-transform hover:scale-105 hover:cursor-pointer min-w-[200px]"
             >
                 <img
                     src={resourceUrl(item.imageUrl)}
@@ -37,18 +34,12 @@ function CardItem({item}: ICartItemProps) {
                     className="w-32 h-32 object-contain mb-3 rounded-lg"
                 />
                 <div className="font-semibold text-lg text-center mb-1">{item.name}</div>
-                <div className="text-[#006f3c] font-bold text-base">{item.price.toLocaleString()}₫</div>
+                <div className="text-[#006f3c] font-bold text-base flex-1">{item.price.toLocaleString()}₫</div>
                 <div className="btns flex flex-row gap-2 mt-3">
-                    <div className="buy">
-                        <button
-                            className="bg-[#006f3c] text-white px-4 py-2 rounded-lg mt-2 hover:bg-[#005a32] transition-colors cursor-pointer select-none">
-                            Buy Now
-                        </button>
-                    </div>
                     <div className="add-to-cart">
                         <button
                             onClick={() => setAddToCartId(item.id)}
-                            className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg mt-2 hover:bg-gray-300 transition-colors cursor-pointer select-none">
+                            className="bg-gray-200 text-gray-800 px-10 py-2 rounded-lg mt-2 hover:bg-gray-300 transition-colors cursor-pointer select-none">
                             Add to Cart
                         </button>
                     </div>
@@ -224,12 +215,8 @@ function CartSelectionForm(props: ICartSelectionForm) {
                                 giá: {convertCoin((product?.price ?? 0) + (product?.sizePrices.find(x => x.id === cartForm.productSizeId)?.price ?? 0))}VNĐ</p>
                         </div>
                         <div>
-                            <p>Giảm
-                                giá/món: {product?.discount}{product?.discountType === TypeDiscount.Absolute ? "VNĐ" : "%"}</p>
-                        </div>
-                        <div>
                             <p>Thành
-                                tiền: {convertCoin(calculatePrice((product?.price ?? 0) + (product?.sizePrices.find(x => x.id === cartForm.productSizeId)?.price ?? 0), cartForm.quantity, cartForm.toppingIds, product?.discount ?? 0, product?.discountType ?? TypeDiscount.Percent, listTopping?.items ?? []))}VNĐ</p>
+                                tiền: {convertCoin(calculatePrice((product?.price ?? 0) + (product?.sizePrices.find(x => x.id === cartForm.productSizeId)?.price ?? 0), cartForm.quantity, cartForm.toppingIds, listTopping?.items ?? []))}VNĐ</p>
                         </div>
                     </div>
                 </div>

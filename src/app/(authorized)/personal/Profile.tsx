@@ -1,6 +1,5 @@
 'use client';
 import React, {useEffect} from 'react';
-import images from "~/constants/images";
 import clsx from "clsx";
 import {HiOutlinePencilSquare} from "react-icons/hi2";
 import {BsCheck2Circle} from "react-icons/bs";
@@ -16,6 +15,7 @@ import {useSelector} from "react-redux";
 import {RootState, store} from "~/redux/store";
 import {setUserData, UserData} from "~/redux/appReducer";
 import {IoCloseCircleOutline} from "react-icons/io5";
+import images from "~/constants/images/images";
 
 function Profile() {
     const queryClient = useQueryClient();

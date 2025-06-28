@@ -4,7 +4,7 @@ import {memo, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import {useRef} from 'react';
 
-function Portal({children}: any) {
+function Portal({children, isPortal = true}: any) {
 	const portal = useRef(document.createElement('div'));
 
 	useEffect(() => {
@@ -15,6 +15,10 @@ function Portal({children}: any) {
 			document.body.removeChild(portal.current);
 		};
 	}, []);
+
+	if (!isPortal) {
+		return children;
+	}
 
 	return portal.current ? ReactDOM.createPortal(children, portal.current) : null;
 }

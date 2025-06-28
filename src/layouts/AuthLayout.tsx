@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {RootState} from '~/redux/store';
 import {useSelector} from "react-redux";
 import Loading from "~/components/common/Loading";
-import {PATH} from "~/constants/config";
+import {Paths} from "~/constants/config";
 
 function AuthLayout({children}: { children: React.ReactNode }) {
     const router = useRouter();
@@ -17,14 +17,14 @@ function AuthLayout({children}: { children: React.ReactNode }) {
 
     useEffect(() => {
         if (!isTokenValid && !isCheckingToken) {
-            router.replace(PATH.Login);
+            router.replace(Paths.Login);
             return;
         }
     }, [isTokenValid, isCheckingToken]);
 
     useEffect(() => {
         if (userData == null && isLoggedIn) {
-            router.replace(PATH.Login);
+            router.replace(Paths.Login);
         }
         setChecking(false);
 

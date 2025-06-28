@@ -7,6 +7,7 @@ export interface IProductWithSizesDto extends IProductCartDto {
 }
 
 export interface IProductSizePriceDto extends IBaseDto {
+    product: IProductCartDto;
     size: ISizeDto;
     price: number;
 }

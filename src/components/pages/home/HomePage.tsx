@@ -75,7 +75,7 @@ function HomePage() {
     })
 
     return (
-        <div className="flex flex-col gap-3 w-full h-full">
+        <div className="flex flex-col gap-3 w-full h-full py-8">
             <div className="relative w-full aspect-[2]">
                 {listBanner &&
                     <SimpleImageSlider
