@@ -2,7 +2,7 @@ import React from 'react';
 import Header from "~/layouts/Header/Header";
 import Footer from "../components/common/Footer/Footer";
 
-function MainLayout({children}: { children: React.ReactNode }) {
+function MainLayout({children, showSearch = true}: { children: React.ReactNode, showSearch?: boolean }) {
     return (
         <div className="relative flex flex-col min-h-screen w-full items-center">
             <Header/>
