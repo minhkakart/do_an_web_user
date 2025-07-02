@@ -40,7 +40,7 @@ function CardItem({item}: ICartItemProps) {
                         <button
                             onClick={() => setAddToCartId(item.id)}
                             className="bg-gray-200 text-gray-800 px-10 py-2 rounded-lg mt-2 hover:bg-gray-300 transition-colors cursor-pointer select-none">
-                            Add to Cart
+                            Thêm vào giỏ hàng
                         </button>
                     </div>
                 </div>
