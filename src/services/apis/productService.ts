@@ -6,12 +6,12 @@ const productService = {
         keyword: string;
         type: number | null;
         special: number | null;
-        categoryId: number | null;
+        categoryIds: number[];
         page: number;
         size: number;
         isPaging: boolean;
     }, tokenAxios?: any) => {
-        return axiosClient.get('/api/v1/Product/list-products' + toQueryString(params), {
+        return axiosClient.post('/api/v1/Product/list-products', params, {
             cancelToken: tokenAxios,
         });
     },

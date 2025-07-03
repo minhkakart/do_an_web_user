@@ -27,6 +27,9 @@ const orderService = {
         size: number;
     }, cancelToken?: any) => {
         return axiosClient.get(`/api/v1/Order/list-order${toQueryString(query)}`, {cancelToken})
+    },
+    cancelOrder(orderId: number, cancelToken?: any) {
+        return axiosClient.post(`/api/v1/Order/cancel-order/${orderId}`,{}, {cancelToken})
     }
 }
 

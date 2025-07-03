@@ -19,7 +19,7 @@ function HomePage() {
                 api: async () => productService.getProducts({
                     page: 1,
                     size: 5,
-                    categoryId: null,
+                    categoryIds: [],
                     keyword: '',
                     special: ProductSpecial.BestSeller,
                     type: ProductType.Main,
@@ -42,7 +42,7 @@ function HomePage() {
                 api: async () => productService.getProducts({
                     page: 1,
                     size: 5,
-                    categoryId: null,
+                    categoryIds: [],
                     keyword: '',
                     special: ProductSpecial.Remarked,
                     type: ProductType.Main,

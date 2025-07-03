@@ -100,7 +100,7 @@ function FormCartUser({queryKeys, onClose, cartData}: IFormCartUserProps) {
                     <></>
                     :
                     <Link
-                        href={Paths.checkout}
+                        href={Paths.Checkout}
                         className="flex justify-center items-center text-white! text-lg bg-green-600 cursor-pointer py-4 hover:bg-green-700">
                         Mua hàng
                     </Link>
@@ -131,7 +131,7 @@ function CartItem({item}: { item: ICartDto }) {
                 api: async () => productService.getProducts({
                     page: 0,
                     size: 0,
-                    categoryId: null,
+                    categoryIds: [],
                     keyword: '',
                     special: null,
                     type: ProductType.Topping,

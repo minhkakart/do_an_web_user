@@ -21,6 +21,8 @@ export enum QueryKey {
     cartUserDetail,
     listUserOrder,
     listProductSearch,
+    getListProducts,
+    allCategory,
 }
 
 export enum UserRole {

@@ -26,7 +26,7 @@ function CardItem({item}: ICartItemProps) {
     return (
         <>
             <div
-                className="bg-white rounded-xl shadow-md flex flex-col items-center p-4 transition-transform hover:scale-105 hover:cursor-pointer min-w-[200px]"
+                className="bg-white rounded-xl shadow-md flex flex-col items-center p-4 transition-transform hover:scale-105 hover:cursor-pointer min-w-[200px] w-full max-w-[240px]"
             >
                 <img
                     src={resourceUrl(item.imageUrl)}
@@ -97,7 +97,7 @@ function CartSelectionForm(props: ICartSelectionForm) {
                 api: async () => productService.getProducts({
                     page: 0,
                     size: 0,
-                    categoryId: null,
+                    categoryIds: [],
                     keyword: '',
                     special: null,
                     type: ProductType.Topping,

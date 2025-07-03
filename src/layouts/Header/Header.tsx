@@ -100,17 +100,15 @@ function Header({showSearch = true, showNav = true}: { showSearch?: boolean, sho
 
                 </div>
             </div>
-            {/*{showNav &&*/}
-            {/*    <div id="header-menu"*/}
-            {/*         className="absolute top-[80px] left-0 z-99 w-full bg-white shadow-lg flex items-center justify-center">*/}
-            {/*        <div className="container flex items-center justify-center gap-12 py-2">*/}
-            {/*            <Link href="/" className="text-gray-700 hover:text-green-700!">Trang chủ</Link>*/}
-            {/*            <Link href="#" className="text-gray-700 hover:text-green-700!">Sản phẩm</Link>*/}
-            {/*            <Link href="#" className="text-gray-700 hover:text-green-700!">Khuyến mãi</Link>*/}
-            {/*            <Link href="#" className="text-gray-700 hover:text-green-700!">Liên hệ</Link>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*}*/}
+            {showNav &&
+                <div id="header-menu"
+                     className="absolute top-[80px] left-0 z-99 w-full bg-white shadow-lg flex items-center justify-center">
+                    <div className="container flex items-center justify-center gap-12 py-2">
+                        <Link href={Paths.Home} className="text-gray-700 hover:text-green-700!">Trang chủ</Link>
+                        <Link href={Paths.Product} className="text-gray-700 hover:text-green-700!">Sản phẩm</Link>
+                    </div>
+                </div>
+            }
         </div>
     );
 }
@@ -194,7 +192,7 @@ function SearchResult({search = null}: ISearchResultProps) {
                     page: 1,
                     size: 5,
                     keyword: search || '',
-                    categoryId: null,
+                    categoryIds: [],
                     special: null,
                     type: ProductType.Main,
                     isPaging: true

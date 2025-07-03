@@ -26,7 +26,8 @@ export enum Paths {
     Home = '/',
     Login = '/login',
     Personal = '/personal',
-    checkout = '/checkout',
+    Checkout = '/checkout',
+    Product = '/product',
 }
 
 
