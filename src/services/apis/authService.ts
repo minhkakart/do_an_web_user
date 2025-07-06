@@ -23,6 +23,17 @@ const authService = {
             cancelToken: tokenAxios,
         });
     },
+    register: (data: {
+        fullname: string,
+        username: string,
+        email: string,
+        phone: string,
+        password: string
+    }, tokenAxios?: any) => {
+        return axiosClient.post(`/api/v1/Auth/register`, data, {
+            cancelToken: tokenAxios,
+        });
+    }
 };
 
 export default authService;
