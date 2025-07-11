@@ -127,7 +127,8 @@ function UserOrders({type}: { type: number }) {
                                             return <span className="text-purple-500">Đang giao</span>;
                                         case OrderStatus.Finished:
                                             return <span className="text-green-500">Đã hoàn thành</span>;
-                                        case OrderStatus.Cancelled || OrderStatus.UserCanceled:
+                                        case OrderStatus.Cancelled:
+                                        case OrderStatus.UserCanceled:
                                             return <span className="text-red-500">Đã hủy</span>;
                                         default:
                                             return <span className="text-green-500">---</span>;

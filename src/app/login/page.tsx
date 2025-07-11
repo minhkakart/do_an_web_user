@@ -44,11 +44,11 @@ function Page() {
             }),
         async onSuccess(data: IToken) {
             if (data) {
-                if (saveToken) {
-                    setItemStorage(KEY_STORAGE_TOKEN, JSON.stringify(data));
-                } else {
-                    deleteItemStorage(KEY_STORAGE_TOKEN);
-                }
+                    setItemStorage(KEY_STORAGE_TOKEN, data);
+                // if (saveToken) {
+                // } else {
+                //     deleteItemStorage(KEY_STORAGE_TOKEN);
+                // }
                 store.dispatch(setToken(data))
                 const res: IUserData  = await apiRequest({
                     api: async () => authService.checkToken(),
