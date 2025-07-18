@@ -44,7 +44,7 @@ function Page() {
             }),
         async onSuccess(data: IToken) {
             if (data) {
-                    setItemStorage(KEY_STORAGE_TOKEN, data);
+                setItemStorage(KEY_STORAGE_TOKEN, data);
                 // if (saveToken) {
                 // } else {
                 //     deleteItemStorage(KEY_STORAGE_TOKEN);
