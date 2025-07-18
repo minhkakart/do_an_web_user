@@ -28,7 +28,7 @@ function CardItem({item}: ICartItemProps) {
             <div
                 className="bg-white rounded-xl shadow-md flex flex-col items-center p-4 transition-transform hover:scale-105 hover:cursor-pointer min-w-[200px] w-full max-w-[240px]"
             >
-                <img
+                <Image
                     src={resourceUrl(item.imageUrl)}
                     alt={item.name}
                     className="w-32 h-32 object-contain mb-3 rounded-lg"
