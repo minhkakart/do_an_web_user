@@ -53,7 +53,6 @@ function SplashScreen({children}: PropsSplashScreen) {
     useEffect(() => {
         store.dispatch(setIsCheckingToken(true));
         const token = getItemStorage<IToken>(KEY_STORAGE_TOKEN);
-        console.log('token', token);
         if (token) {
             store.dispatch(setToken(token));
             setLoadingToken(false);
