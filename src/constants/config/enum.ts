@@ -23,6 +23,7 @@ export enum QueryKey {
     listProductSearch,
     getListProducts,
     allCategory,
+    detailOrder,
 }
 
 export enum UserRole {

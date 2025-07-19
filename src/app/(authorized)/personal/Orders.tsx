@@ -12,6 +12,7 @@ import Image from "next/image";
 import {resourceUrl} from "~/commons/funcs/optionConvert";
 import Dialog from "~/components/common/Dialog";
 import {Danger} from "iconsax-react";
+import Popup from "~/components/common/Popup/Popup";
 
 
 function Orders() {
@@ -59,6 +60,7 @@ export default Orders;
 function UserOrders({type}: { type: number }) {
     const queryClient = useQueryClient();
     const [cancelOrderId, setCancelOrderId] = React.useState<number | null>(null);
+    const [orderDetailId, setOrderDetailId] = React.useState<number | null>(null);
 
     const {data: userOrders} = useQuery({
         queryFn: () => apiRequest({
@@ -92,7 +94,9 @@ function UserOrders({type}: { type: number }) {
         <>
             <div className="flex flex-1 flex-col w-full gap-2 py-2">
                 {userOrders?.items?.map((order) => (
-                    <div className="flex flex-1 flex-col w-full border border-gray-300 rounded-lg p-2">
+                    <div
+                        onClick={() => setOrderDetailId(order.id)}
+                        className="flex flex-1 flex-col w-full border border-gray-300 rounded-lg p-2 cursor-pointer">
                         <div className="flex items-center justify-between">
                             <p>#{order.code}</p>
                             <p>{moment(order.orderTime).format("DD/MM/YYYY HH:mm")}</p>
@@ -138,8 +142,9 @@ function UserOrders({type}: { type: number }) {
                             }</p>
                             {order.status == OrderStatus.Pending && (
                                 <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                                        onClick={() => {
-                                            setCancelOrderId(order.id)
+                                        onClick={(e) => {
+                                            setCancelOrderId(order.id);
+                                            e.stopPropagation();
                                         }}>Hủy đơn</button>
                             )}
                         </div>
@@ -157,6 +162,60 @@ function UserOrders({type}: { type: number }) {
                 }
                 onSubmit={() => cancelOrder.mutate()}
             />
+            <Popup open={!!orderDetailId} onClose={() => setOrderDetailId(null)}>
+                <DetailOrder orderId={orderDetailId!}/>
+            </Popup>
         </>
+    );
+}
+
+function DetailOrder({orderId}: { orderId: number }) {
+
+    const {data: detailOrder} = useQuery({
+        queryFn: () => apiRequest({
+            api: () => orderService.getOrderDetail(orderId)
+        }),
+        select(data: IUserOrderDto) {
+            return data;
+        },
+
+        enabled: !!orderId,
+        queryKey: [QueryKey.detailOrder, orderId]
+    })
+    console.log("detailOrder", detailOrder);
+
+    return (
+        <div className="flex flex-1 flex-col w-[420px] h-[600px] p-4 bg-white rounded-lg ">
+            <h2 className="border-b mb-3">Chi tiết đơn hàng <span className="font-semibold">#{detailOrder?.code}</span>
+            </h2>
+            <div className="overflow-y-scroll">
+                {detailOrder?.products.map(product => {
+                    return (
+                        <div key={product.id}
+                             className="flex items-center justify-between py-2 &+&:border-t border-gray-300">
+                            <div className="flex items-center gap-2">
+                                <Image src={resourceUrl(product.productSize.product.imageUrl)} alt="image"
+                                       width={50} height={50}/>
+                                <p>{product.productSize.product.name} - {product.productSize.size.name}</p>
+                            </div>
+                            <div className="flex flex-col items-end">
+                                <p>Số lượng: {product.quantity}</p>
+                                <p>Giá: {(product.price * product.quantity).toLocaleString('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                })}</p>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+            <div className="flex items-center justify-between border-t pt-2 mt-2">
+                <p>Tổng tiền:</p>
+                <p>{detailOrder?.finalAmount.toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                })}</p>
+            </div>
+        </div>
     );
 }

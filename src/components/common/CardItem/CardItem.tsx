@@ -15,6 +15,10 @@ import Image from "next/image";
 import clsx from "clsx";
 import {convertCoin} from "~/commons/funcs/convertCoin";
 import {calculatePrice} from "~/commons/funcs/commons";
+import {useSelector} from "react-redux";
+import {RootState} from "~/redux/store";
+import {useRouter} from "next/navigation";
+import {Paths} from "~/constants/config";
 
 export interface ICartItemProps {
     item: IProductCartDto
@@ -22,6 +26,8 @@ export interface ICartItemProps {
 
 function CardItem({item}: ICartItemProps) {
     const [addToCartId, setAddToCartId] = useState<number | null>(null);
+    const user = useSelector((state: RootState) => state.userData);
+    const router = useRouter();
 
     return (
         <>
@@ -32,13 +38,21 @@ function CardItem({item}: ICartItemProps) {
                     src={resourceUrl(item.imageUrl)}
                     alt={item.name}
                     className="w-32 h-32 object-contain mb-3 rounded-lg"
+                    width={128}
+                    height={128}
                 />
                 <div className="font-semibold text-lg text-center mb-1">{item.name}</div>
                 <div className="text-[#006f3c] font-bold text-base flex-1">{item.price.toLocaleString()}₫</div>
                 <div className="btns flex flex-row gap-2 mt-3">
                     <div className="add-to-cart">
                         <button
-                            onClick={() => setAddToCartId(item.id)}
+                            onClick={() => {
+                                if (!user) {
+                                    router.push(Paths.Login);
+                                    return;
+                                }
+                                setAddToCartId(item.id)
+                            }}
                             className="bg-gray-200 text-gray-800 px-10 py-2 rounded-lg mt-2 hover:bg-gray-300 transition-colors cursor-pointer select-none">
                             Thêm vào giỏ hàng
                         </button>

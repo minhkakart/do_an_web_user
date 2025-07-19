@@ -126,7 +126,7 @@ function SelectForm<OptionType>({
 							</div>
 						) : (
 							<div className={styles.empty}>
-								<Image src={icons.emptyFile} alt='image empty' />
+								<Image src={icons.emptyFile} alt='image empty' width={128} height={128} />
 								<p>Danh sách lựa chọn rỗng!</p>
 							</div>
 						)}

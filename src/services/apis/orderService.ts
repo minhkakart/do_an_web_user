@@ -30,6 +30,9 @@ const orderService = {
     },
     cancelOrder(orderId: number, cancelToken?: any) {
         return axiosClient.post(`/api/v1/Order/cancel-order/${orderId}`,{}, {cancelToken})
+    },
+    getOrderDetail(id: number, token?: any) {
+        return axiosClient.get(`/api/v1/Order/detail-order/${id}`, {cancelToken: token});
     }
 }
 
