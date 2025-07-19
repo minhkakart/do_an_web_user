@@ -56,7 +56,7 @@ function Page() {
             }
             return {items: [], pagination: {totalCount: 0, totalPage: 0}} as IPageResponse<IProductCartDto>;
         },
-        queryKey: [QueryKey.getListProducts],
+        queryKey: [QueryKey.getListProducts, page, pageSize, categoryFilter, keyword],
     })
 
     return (
